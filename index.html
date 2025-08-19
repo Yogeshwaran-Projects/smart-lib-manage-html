@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Library Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app/globals.css">
+    <style>
+        /* Enhanced professional styling with semantic design tokens */
+        :root {
+            --background: #ffffff;
+            --foreground: #374151;
+            --card: #f1f5f9;
+            --card-foreground: #374151;
+            --primary: #059669;
+            --primary-foreground: #ffffff;
+            --secondary: #475569;
+            --accent: #10b981;
+            --border: #e5e7eb;
+            --muted: #f1f5f9;
+            --muted-foreground: #6b7280;
+            --ring: #059669;
+            --radius: 0.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', system-ui, -apple-system, sans-serif;
+            background: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .font-heading {
+            font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--background);
+            min-height: 100vh;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Enhanced header with sophisticated gradient and typography */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: var(--primary-foreground);
+            padding: 3rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.4;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 40%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(15deg);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+
+        /* Sophisticated navigation with enhanced hover states */
+        .nav-tabs {
+            background: var(--background);
+            border-bottom: 2px solid var(--border);
+            padding: 0 2rem;
+            display: flex;
+            gap: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1.25rem 2rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--muted-foreground);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+            background: rgba(5, 150, 105, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: rgba(5, 150, 105, 0.08);
+            box-shadow: 0 -2px 8px rgba(5, 150, 105, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 3rem 2rem;
+            animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Enhanced section headers with better typography */
+        .section-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--foreground);
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .section-header p {
+            color: var(--muted-foreground);
+            font-size: 1.125rem;
+            font-weight: 500;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Professional form styling with enhanced focus states */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--foreground);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--background);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Enhanced button styling with sophisticated hover effects */
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: var(--primary-foreground);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary) 0%, #374151 100%);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 8px 25px rgba(75, 85, 99, 0.3);
+        }
+
+        /* Enhanced search section with modern card design */
+        .search-section {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: calc(var(--radius) * 1.5);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+        }
+
+        .search-section:hover {
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1.125rem;
+            background: var(--background);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Sophisticated book cards with enhanced visual hierarchy */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+
+        .book-card {
+            background: var(--background);
+            border: 2px solid var(--border);
+            border-radius: calc(var(--radius) * 1.5);
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .book-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .book-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(5, 150, 105, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .book-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--foreground);
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+        }
+
+        .book-author {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .book-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            color: var(--muted-foreground);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.75rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .meta-value {
+            color: var(--foreground);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Enhanced availability badges with better visual design */
+        .availability-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .availability-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .availability-badge:hover::before {
+            transform: translateX(100%);
+        }
+
+        .available {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .unavailable {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .book-description {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border);
+            font-style: italic;
+        }
+
+        /* Enhanced alert styling */
+        .alert {
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius);
+            margin: 1.5rem 0;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 2px solid;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            border-color: #10b981;
+            color: #065f46;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            border-color: #0288d1;
+            color: #01579b;
+        }
+
+        /* Sophisticated statistics cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--background) 0%, var(--card) 100%);
+            border: 2px solid var(--border);
+            border-radius: calc(var(--radius) * 1.5);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(5, 150, 105, 0.1);
+            border-color: var(--primary);
+        }
+
+        .stat-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Enhanced responsive design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+            }
+            
+            .header {
+                padding: 2rem 1rem 3rem;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-tabs {
+                padding: 0 1rem;
+                overflow-x: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            
+            .nav-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .tab-content {
+                padding: 2rem 1rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Enhanced header with professional typography -->
+        <div class="header">
+            <div class="header-content">
+                <h1 class="font-heading">Academic Library System</h1>
+                <p class="font-body">Computer Science & Engineering Resource Management</p>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('library')">Library Collection</button>
+            <button class="tab-btn" onclick="switchTab('add-book')">Add New Resource</button>
+            <button class="tab-btn" onclick="switchTab('search')">Advanced Search</button>
+        </div>
+
+        <!-- Library Tab -->
+        <div id="library" class="tab-content active">
+            <div class="section-header">
+                <h2 class="font-heading">Digital Library Collection</h2>
+                <p class="font-body">Comprehensive computer science and engineering academic resources at your fingertips</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-books">0</div>
+                    <div class="stat-label">Total Resources</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="available-books">0</div>
+                    <div class="stat-label">Available Now</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="borrowed-books">0</div>
+                    <div class="stat-label">Currently Borrowed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="unique-authors">0</div>
+                    <div class="stat-label">Expert Authors</div>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <input type="text" id="search-books" class="search-input" 
+                       placeholder="Search by title, author, ISBN, category, or keywords..." 
+                       onkeyup="filterBooks()">
+            </div>
+            
+            <div id="books-container" class="books-grid"></div>
+        </div>
+
+        <!-- Add Book Tab -->
+        <div id="add-book" class="tab-content">
+            <div class="section-header">
+                <h2 class="font-heading">Add Academic Resource</h2>
+                <p class="font-body">Expand your library collection with new computer science and engineering resources</p>
+            </div>
+            
+            <form id="add-book-form" onsubmit="event.preventDefault(); addBook();">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="title">Resource Title *</label>
+                        <input type="text" id="title" name="title" required 
+                               placeholder="e.g., Introduction to Algorithms">
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Author(s) *</label>
+                        <input type="text" id="author" name="author" required 
+                               placeholder="e.g., Thomas H. Cormen, Charles E. Leiserson">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="isbn">ISBN *</label>
+                        <input type="text" id="isbn" name="isbn" required maxlength="13" 
+                               pattern="[0-9]{13}" title="Enter 13-digit ISBN"
+                               placeholder="9780262033848">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Academic Category</label>
+                        <select id="category" name="category">
+                            <option value="">Select Category</option>
+                            <option value="Algorithms">Algorithms & Data Structures</option>
+                            <option value="Programming">Programming Languages</option>
+                            <option value="Software Engineering">Software Engineering</option>
+                            <option value="Computer Networks">Computer Networks</option>
+                            <option value="Database Systems">Database Systems</option>
+                            <option value="Operating Systems">Operating Systems</option>
+                            <option value="Computer Architecture">Computer Architecture</option>
+                            <option value="Machine Learning">Machine Learning & AI</option>
+                            <option value="Cybersecurity">Cybersecurity</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Mobile Development">Mobile Development</option>
+                            <option value="Mathematics">Mathematics for CS</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="year">Publication Year</label>
+                        <input type="number" id="year" name="year" 
+                               min="1950" max="2024" placeholder="2022">
+                    </div>
+                    <div class="form-group">
+                        <label for="copies">Available Copies</label>
+                        <input type="number" id="copies" name="copies" min="1" value="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Academic Description</label>
+                    <textarea id="description" name="description" rows="4" 
+                              placeholder="Comprehensive description of the resource content, target audience, and academic relevance"></textarea>
+                </div>
+
+                <button type="submit" class="btn">Add to Library Collection</button>
+            </form>
+        </div>
+
+        <!-- Advanced Search Tab -->
+        <div id="search" class="tab-content">
+            <div class="section-header">
+                <h2 class="font-heading">Advanced Resource Search</h2>
+                <p class="font-body">Discover academic resources using comprehensive search criteria and filters</p>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="search-isbn">Search by ISBN</label>
+                    <input type="text" id="search-isbn" placeholder="Enter 13-digit ISBN">
+                </div>
+                <div class="form-group">
+                    <label for="search-category">Academic Category</label>
+                    <select id="search-category">
+                        <option value="">All Categories</option>
+                        <option value="Algorithms">Algorithms & Data Structures</option>
+                        <option value="Programming">Programming Languages</option>
+                        <option value="Software Engineering">Software Engineering</option>
+                        <option value="Computer Networks">Computer Networks</option>
+                        <option value="Database Systems">Database Systems</option>
+                        <option value="Operating Systems">Operating Systems</option>
+                        <option value="Computer Architecture">Computer Architecture</option>
+                        <option value="Machine Learning">Machine Learning & AI</option>
+                        <option value="Cybersecurity">Cybersecurity</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Mobile Development">Mobile Development</option>
+                        <option value="Mathematics">Mathematics for CS</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="search-author">Author Name</label>
+                    <input type="text" id="search-author" placeholder="Enter author name">
+                </div>
+                <div class="form-group">
+                    <label for="availability-filter">Availability Status</label>
+                    <select id="availability-filter">
+                        <option value="">All Resources</option>
+                        <option value="available">Available Only</option>
+                        <option value="unavailable">Borrowed Only</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="search-query">Search Query</label>
+                    <input type="text" id="search-query" placeholder="Enter search term">
+                </div>
+            </div>
+
+            <button class="btn" onclick="searchBooks()">Search Resources</button>
+            <button class="btn btn-secondary" onclick="resetSearch()" style="margin-left: 1rem;">Clear All Filters</button>
+
+            <div id="search-results" style="margin-top: 2rem;"></div>
+        </div>
+    </div>
+
+    <script>
+        let books = [];
+        let allBooks = [];
+
+        const API_BASE_URL = 'http://localhost:6969/api';
+
+        async function fetchBooksFromAPI() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/books`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching books from API:', error);
+                // Fallback to empty array if API fails
+                return [];
+            }
+        }
+
+        async function fetchStatsFromAPI() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/stats`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching stats from API:', error);
+                return null;
+            }
+        }
+
+        async function initializeLibrary() {
+            try {
+                // Show loading state
+                const container = document.getElementById('books-container');
+                if (container) {
+                    container.innerHTML = '<div class="alert alert-info">Loading library collection from server...</div>';
+                }
+
+                // Fetch books from API
+                books = await fetchBooksFromAPI();
+                allBooks = [...books];
+
+                // Fetch and update statistics
+                const stats = await fetchStatsFromAPI();
+                if (stats) {
+                    updateStatistics(stats);
+                } else {
+                    // Calculate stats from books data if API fails
+                    calculateAndUpdateStats();
+                }
+
+                // Display books
+                displayBooks();
+                
+                console.log(`Loaded ${books.length} books from API`);
+            } catch (error) {
+                console.error('Error initializing library:', error);
+                const container = document.getElementById('books-container');
+                if (container) {
+                    container.innerHTML = '<div class="alert alert-error">Failed to load library data from server. Please check if the backend is running on http://localhost:6969</div>';
+                }
+            }
+        }
+
+        function updateStatistics(stats) {
+            document.getElementById('total-books').textContent = stats.total_books || 0;
+            document.getElementById('available-books').textContent = stats.available_copies || 0;
+            document.getElementById('borrowed-books').textContent = stats.borrowed_books || 0;
+            
+            // Calculate unique authors from books data
+            const uniqueAuthors = new Set(books.map(book => book.author)).size;
+            document.getElementById('unique-authors').textContent = uniqueAuthors;
+        }
+
+        function calculateAndUpdateStats() {
+            const totalBooks = books.length;
+            const availableBooks = books.reduce((sum, book) => sum + (book.available || 0), 0);
+            const totalCopies = books.reduce((sum, book) => sum + (book.copies || 0), 0);
+            const borrowedBooks = totalCopies - availableBooks;
+            const uniqueAuthors = new Set(books.map(book => book.author)).size;
+
+            document.getElementById('total-books').textContent = totalBooks;
+            document.getElementById('available-books').textContent = availableBooks;
+            document.getElementById('borrowed-books').textContent = borrowedBooks;
+            document.getElementById('unique-authors').textContent = uniqueAuthors;
+        }
+
+        async function addBook() {
+            const isbn = document.getElementById('isbn').value.trim();
+            const title = document.getElementById('title').value.trim();
+            const author = document.getElementById('author').value.trim();
+            const category = document.getElementById('category').value.trim();
+            const year = document.getElementById('year').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const copies = parseInt(document.getElementById('copies').value) || 1;
+
+            if (!isbn || !title || !author) {
+                alert('Please fill in all required fields (ISBN, Title, Author)');
+                return;
+            }
+
+            try {
+                const bookData = {
+                    isbn: isbn,
+                    title: title,
+                    author: author,
+                    category: category || null,
+                    publication_year: year ? parseInt(year) : null,
+                    description: description || null,
+                    copies: copies
+                };
+
+                const response = await fetch(`${API_BASE_URL}/books`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(bookData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to add book');
+                }
+
+                const result = await response.json();
+                alert('Book added successfully!');
+
+                // Clear form
+                document.getElementById('add-book-form').reset();
+
+                // Refresh the library data
+                await initializeLibrary();
+
+                // Switch back to library tab
+                switchTab('library');
+
+            } catch (error) {
+                console.error('Error adding book:', error);
+                alert(`Error adding book: ${error.message}`);
+            }
+        }
+
+        async function searchBooks() {
+            const query = document.getElementById('search-query').value.trim();
+            
+            if (!query) {
+                alert('Please enter a search term');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/search?q=${encodeURIComponent(query)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const searchResults = await response.json();
+                
+                // Update the display with search results
+                books = searchResults;
+                displayBooks();
+                
+                // Update search results info
+                const resultsInfo = document.getElementById('search-results');
+                if (resultsInfo) {
+                    resultsInfo.textContent = `Found ${searchResults.length} result(s) for "${query}"`;
+                    resultsInfo.style.display = 'block';
+                }
+
+                // Switch to library tab to show results
+                switchTab('library');
+                
+            } catch (error) {
+                console.error('Error searching books:', error);
+                alert(`Search failed: ${error.message}`);
+            }
+        }
+
+        async function resetSearch() {
+            books = [...allBooks];
+            displayBooks();
+            
+            const resultsInfo = document.getElementById('search-results');
+            if (resultsInfo) {
+                resultsInfo.style.display = 'none';
+            }
+            
+            document.getElementById('search-query').value = '';
+            document.getElementById('search-books').value = '';
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+
+            if (tabName === 'library') {
+                displayBooks();
+            }
+        }
+
+        function displayBooks() {
+            const container = document.getElementById('books-container');
+            
+            if (books.length === 0) {
+                container.innerHTML = '<div class="alert alert-error">No academic resources in the library collection yet. Add some resources to get started.</div>';
+                return;
+            }
+
+            container.innerHTML = books.map(book => createBookCard(book)).join('');
+        }
+
+        function filterBooks() {
+            const searchTerm = document.getElementById('search-books').value.toLowerCase();
+            const filteredBooks = books.filter(book => 
+                book.title.toLowerCase().includes(searchTerm) ||
+                book.author.toLowerCase().includes(searchTerm) ||
+                book.isbn.includes(searchTerm) ||
+                (book.category && book.category.toLowerCase().includes(searchTerm)) ||
+                (book.description && book.description.toLowerCase().includes(searchTerm))
+            );
+
+            const container = document.getElementById('books-container');
+            
+            if (filteredBooks.length === 0) {
+                container.innerHTML = '<div class="alert alert-error">No resources match your search criteria. Try different keywords.</div>';
+                return;
+            }
+
+            container.innerHTML = filteredBooks.map(book => createBookCard(book)).join('');
+        }
+
+        function createBookCard(book) {
+            const availabilityBadge = book.available > 0 ? 
+                `<span class="availability-badge available">Available (${book.available}/${book.copies})</span>` : 
+                `<span class="availability-badge unavailable">Currently Borrowed</span>`;
+
+            return `
+                <div class="book-card">
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">${book.author}</div>
+                    <div class="book-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">ISBN</div>
+                            <div class="meta-value">${book.isbn}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Category</div>
+                            <div class="meta-value">${book.category || 'Uncategorized'}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Published</div>
+                            <div class="meta-value">${book.publication_year || 'N/A'}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Status</div>
+                            <div class="meta-value">${availabilityBadge}</div>
+                        </div>
+                    </div>
+                    ${book.description ? `<div class="book-description">${book.description}</div>` : ''}
+                </div>
+            `;
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            const activeTab = document.querySelector('.tab-content.active');
+            activeTab.insertBefore(alertDiv, activeTab.firstChild);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeLibrary();
+        });
+    </script>
+</body>
+</html>

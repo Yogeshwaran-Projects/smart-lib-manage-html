@@ -1,0 +1,31 @@
+
+# 🌐 How to Serve Your HTML File
+
+## Method 1: Python HTTP Server (Recommended)
+# Navigate to your HTML file directory and run:
+python3 -m http.server 8080
+
+# Then your QR code will work with: http://localhost:8080/index.html
+
+## Method 2: Node.js (if you have it)
+# Install a simple server:
+npm install -g http-server
+
+# Run in your HTML directory:
+http-server -p 8080
+
+## Method 3: Use your Flask app to serve HTML
+# Add this route to your app.py:
+
+@app.route('/frontend')
+def serve_frontend():
+    with open('index.html', 'r') as file:
+        return file.read()
+
+# Then use: http://localhost:5000/frontend in your QR code
+
+## Method 4: Upload to GitHub Pages (for permanent hosting)
+# 1. Create a GitHub repository
+# 2. Upload your index.html
+# 3. Enable GitHub Pages in settings
+# 4. Use the GitHub Pages URL in your QR code
