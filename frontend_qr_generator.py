@@ -2,7 +2,6 @@ import qrcode
 import os
 from PIL import Image, ImageDraw, ImageFont
 
-
 def generate_frontend_qr():
     """Generate QR code that links to the frontend HTML file"""
     
